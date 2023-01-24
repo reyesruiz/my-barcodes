@@ -27,13 +27,19 @@ export default function HomePage() {
   const isRefetching = false;
   const [showResourcePicker, setShowResourcePicker] = useState(false);
   const appBridge = useAppBridge();
-  const fetch = useAuthenticatedFetch();
-  
+  const ShopifyToken = process.env.SHOPIFY_API_KEY
+  const headers = new Headers({'Authorization': 'Token ' + ShopifyToken});
   const getURL = (url) => {
     console.log("URL is: %s", url)
-      fetch(url).then((res) => res.text()).then((data) => {
+      fetch(url, {
+    method: 'get',
+    headers: headers,
+
+}).then((res) => res.text()).then((data) => {
         console.log(data);
+        console.log(res.headers.authorization);
       }).catch((err) => {
+        console.log(err.Authorization);
         console.log(err.message);
       });
     //return
@@ -46,8 +52,10 @@ export default function HomePage() {
       console.log(element.id);
       const productId = element.id.split("/").pop();
       console.log(productId);
-      const url = "http://localhost:8000/shopify_apis/generate_barcodes/" + productId;
+      const url = "https://shopify-apis-" + 'los-vaqueros-dev' + ".digitalruiz.com" +"/shopify_apis/generate_barcodes/" + productId
       console.log(url);
+      //console.log(process.env)
+      console.log(ShopifyToken)
       getURL(url);
     }
     
