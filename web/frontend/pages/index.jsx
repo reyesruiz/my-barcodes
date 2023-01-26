@@ -55,7 +55,7 @@ export default function HomePage() {
       console.log(productId);
       const url = "https://shopify-apis-" + 'los-vaqueros-dev' + ".digitalruiz.com" +"/shopify_apis/generate_barcodes/" + productId
       console.log(url);
-      console.log(process.env)
+      //console.log(process.env)
       console.log(ShopifyToken)
       console.log(DonmainName)
       getURL(url);
