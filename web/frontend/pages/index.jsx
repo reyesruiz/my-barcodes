@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import { ContextualSaveBar, ResourcePicker, useAppBridge, useNavigate, TitleBar, Loading } from "@shopify/app-bridge-react";
 import {
   Card,
@@ -22,25 +23,19 @@ export default function HomePage() {
   /*
     These are mock values. Setting these values lets you preview the loading markup and the empty state.
   */
-  
+
   const isLoading = false;
   const isRefetching = false;
   const [showResourcePicker, setShowResourcePicker] = useState(false);
   const appBridge = useAppBridge();
-  const ShopifyToken = process.env.SHOPIFY_API_KEY
-  const DonmainName = process.env.REACT_APP_DOMAIN_NAME
-  const headers = new Headers({'Authorization': 'Token ' + ShopifyToken});
-  const getURL = (url) => {
+  const getURL = (url, headers) => {
     console.log("URL is: %s", url)
       fetch(url, {
     method: 'get',
     headers: headers,
-
-}).then((res) => res.text()).then((data) => {
+      }).then((res) => res.text()).then((data) => {
         console.log(data);
-        console.log(res.headers.authorization);
       }).catch((err) => {
-        console.log(err.Authorization);
         console.log(err.message);
       });
     //return
@@ -53,23 +48,22 @@ export default function HomePage() {
       console.log(element.id);
       const productId = element.id.split("/").pop();
       console.log(productId);
-      const url = "https://shopify-apis-" + 'los-vaqueros-dev' + ".digitalruiz.com" +"/shopify_apis/generate_barcodes/" + productId
+      const shopify_django_apis_url = import.meta.env.VITE_SHOPIFY_DJANGO_APIS_URL;
+      const url = shopify_django_apis_url + "generate_barcodes/" + productId;
+      const shopify_django_apis_token = import.meta.env.VITE_SHOPIFY_DJANGO_APIS_TOKEN;
+      const headers = new Headers({'Authorization': 'Token ' + shopify_django_apis_token});
       console.log(url);
-      //console.log(process.env)
-      console.log(ShopifyToken)
-      console.log(DonmainName)
-      getURL(url);
+      getURL(url, headers);
     }
-    
+
     setShowResourcePicker(false);
   }, []);
-  
 
   const toggleResourcePicker = useCallback(
     () => setShowResourcePicker(!showResourcePicker),
     [showResourcePicker]
   );
-  
+
   /* loadingMarkup uses the loading component from AppBridge and components from Polaris  */
   const loadingMarkup = isLoading ? (
     <Card sectioned>
@@ -95,14 +89,14 @@ export default function HomePage() {
             Create barcodes for variants that do not have a barcode.
           </p>
         </EmptyState>
-        
+
 
       </Card>
-      
-      
+
+
     ) : null;
 
-  const showProductPicker = 
+  const showProductPicker =
     !isLoading ?(
       <Card.Section>
         {showResourcePicker && (
@@ -118,7 +112,12 @@ export default function HomePage() {
         </Card.Section>
     ) : null;
 
-   
+
+  /*
+    Use Polaris Page and TitleBar components to create the page layout,
+    and include the empty state contents set above.
+  */
+
   /*
     Use Polaris Page and TitleBar components to create the page layout,
     and include the empty state contents set above.
