@@ -59,6 +59,7 @@ export default function HomePage() {
     setShowResourcePicker(false);
   }, []);
 
+
   const toggleResourcePicker = useCallback(
     () => setShowResourcePicker(!showResourcePicker),
     [showResourcePicker]
@@ -112,11 +113,11 @@ export default function HomePage() {
         </Card.Section>
     ) : null;
 
+
   /*
     Use Polaris Page and TitleBar components to create the page layout,
     and include the empty state contents set above.
   */
-
   return (
     <Page>
       <TitleBar
