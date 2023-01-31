@@ -111,16 +111,11 @@ export default function HomePage() {
         </Card.Section>
     ) : null;
 
-
   /*
     Use Polaris Page and TitleBar components to create the page layout,
     and include the empty state contents set above.
   */
 
-  /*
-    Use Polaris Page and TitleBar components to create the page layout,
-    and include the empty state contents set above.
-  */
   return (
     <Page>
       <TitleBar
