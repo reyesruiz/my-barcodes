@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import { ContextualSaveBar, ResourcePicker, useAppBridge, useNavigate, TitleBar, Loading } from "@shopify/app-bridge-react";
 import {
   Card,
