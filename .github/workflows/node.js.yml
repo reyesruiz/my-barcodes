@@ -25,12 +25,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+    - run: curl -sL https://deb.nodesource.com/setup_${{ matrix.node-version }} -o nodesource_setup.sh
+    - run: npm install
     - run: cd web
-    - run: npm ci
+    - run: npm install
     - run : cd frontend
-    - run: npm ci
+    - run: npm install
     - run: npm run build --if-present
