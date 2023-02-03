@@ -41,6 +41,8 @@ export default function HomePage() {
     //return
   }
 
+  console.log(import.meta.env);
+
   const handleProductChange = useCallback(({ selection }) => {
     console.log("TEST");
     console.log(selection);
