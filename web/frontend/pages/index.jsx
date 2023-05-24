@@ -33,7 +33,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const getData = async (url, headers) => {
+  const asyncgetData = async (url, headers) => {
     console.log("URL is: %s", url)
     try {
       const response = await fetch(
@@ -60,7 +60,7 @@ export default function HomePage() {
     }
   }
 
-  const handleProductChange = useCallback(({ selection }) => {
+  const handleProductChange = useCallback(async ({ selection }) => {
     console.log("TEST");
     console.log(selection);
     for (const element of selection){
@@ -72,7 +72,8 @@ export default function HomePage() {
       const shopify_django_apis_token = import.meta.env.VITE_SHOPIFY_DJANGO_APIS_TOKEN;
       const headers = new Headers({'Authorization': 'Token ' + shopify_django_apis_token});
       console.log(url);
-      getData(url, headers);
+      await asyncgetData(url, headers);
+      console.log("Initial Loading is ", loading);
     }
 
     setShowResourcePicker(false);
