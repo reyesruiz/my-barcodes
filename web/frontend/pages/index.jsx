@@ -28,20 +28,39 @@ export default function HomePage() {
   const isRefetching = false;
   const [showResourcePicker, setShowResourcePicker] = useState(false);
   const appBridge = useAppBridge();
-  const getURL = (url, headers) => {
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const asyncgetData = async (url, headers) => {
     console.log("URL is: %s", url)
-      fetch(url, {
-    method: 'get',
-    headers: headers,
-      }).then((res) => res.text()).then((data) => {
-        console.log(data);
-      }).catch((err) => {
-        console.log(err.message);
-      });
-    //return
+    try {
+      const response = await fetch(
+        url, {
+          method: 'get',
+          headers: headers,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(
+          'This is an HTTP error: The status is ${response.status}'
+        );
+      }
+      let actualData = await response.json();
+      setData(actualData);
+      setError(null);
+    }
+    catch (err) {
+      setError(err.message);
+      setData(null);
+    }
+    finally {
+      setLoading(false);
+    }
   }
 
-  const handleProductChange = useCallback(({ selection }) => {
+  const handleProductChange = useCallback(async ({ selection }) => {
     console.log("TEST");
     console.log(selection);
     for (const element of selection){
@@ -53,7 +72,8 @@ export default function HomePage() {
       const shopify_django_apis_token = import.meta.env.VITE_SHOPIFY_DJANGO_APIS_TOKEN;
       const headers = new Headers({'Authorization': 'Token ' + shopify_django_apis_token});
       console.log(url);
-      getURL(url, headers);
+      await asyncgetData(url, headers);
+      console.log("Initial Loading is ", loading);
     }
 
     setShowResourcePicker(false);
